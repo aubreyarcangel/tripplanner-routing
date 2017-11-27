@@ -34,4 +34,13 @@ router.get("/itineraries/:id", (req, res, next) => {
     });
 });
 
+router.post('/itineraries', (req, res, next) => {
+  console.log(req.body)
+  res.send(req)
+  // Itinerary.create({
+  //   name: req.body.name
+  // })
+  // .then(row => res.send(row))
+})
+
 module.exports = router;

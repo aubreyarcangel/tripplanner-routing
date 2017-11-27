@@ -563,7 +563,7 @@ if (location.hash) {
   .catch(err => {
     console.log(err)
   })
-} 
+}
 /*
   * Instantiate the Map
   */
@@ -669,6 +669,56 @@ const buildAttractionAssets = (category, attraction) => {
     map.flyTo({ center: [-74.0, 40.731], zoom: 12.3 });
   });
 };
+
+const saveButton = document.getElementById('save')
+saveButton.addEventListener('click', (event) => {
+  // console.log(hotels)
+  console.log(selectedAttractions)
+  // const hotels = document.getElementById('hotels-list').children
+  // const restaurants = document.getElementById('restaurants-list').children
+  // let activities = document.getElementById('activities-list').children
+  let temp = {
+    hotels: [],
+    restaurants: [],
+    activities: []
+  }
+
+  let arr = [hotels.length,restaurants.length,activities.length];
+  let max = arr.reduce(function(a, b) {
+    return Math.max(a, b);
+  });
+
+
+  //if all contain item
+  for(let i = 0; i < max; i++) {
+    temp.activities.push(activities[i].childNodes[0].data)
+    temp.hotels.push(hotels[i].childNodes[0].data)
+    temp.restaurants.push(restaurants[i].childNodes[0].data)
+  }
+  console.log(temp)
+  console.log(JSON.stringify({
+    name: 'test',
+    hotels: temp.hotels,
+    restaurants: temp.restaurants,
+    activities: temp.activities
+  }))
+  fetch('http://localhost:3000/api/itineraries', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      name: 'test',
+      hotels: temp.hotels,
+      restaurants: temp.restaurants,
+      activities: temp.activities
+    })
+  })
+  .then(results => {
+    console.log('working')
+  })
+  .catch(err => console.log(err))
+})
 
 
 /***/ }),
