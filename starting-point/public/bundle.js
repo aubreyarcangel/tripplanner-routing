@@ -542,21 +542,34 @@ const buildMarker = __webpack_require__(4);
  * App State
  */
 
+
 const state = {
   attractions: {},
   selectedAttractions: []
 };
 
+console.log(location)
+if (location.hash) {
+  const id = parseInt(location.hash.slice(1))
+  fetch('http://localhost:3000/api/itineraries/' + id)
+  .then(itineraryData => {
+    itineraryData.hotels.forEach(hotel => buildAttractionAssets("hotels", hotel));
+    itineraryData.restaurants.forEach(restaurant => buildAttractionAssets("restaurants", restaurant));
+    itineraryData.activities.forEach(activity => buildAttractionAssets("activities", activity));
+  })
+} 
 /*
   * Instantiate the Map
   */
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiY2Fzc2lvemVuIiwiYSI6ImNqNjZydGl5dDJmOWUzM3A4dGQyNnN1ZnAifQ.0ZIRDup0jnyUFVzUa_5d1g";
+mapboxgl.accessToken = "pk.eyJ1IjoiYWFyY2FuZ2VsIiwiYSI6ImNqYTl1ZXZzZDBsYWYzMmxpazF3bDVuNnkifQ.WE42clV9FSudlJGMl81UBQ";
+
+const fullstackCoords = [-74.009, 40.705]; // NY
+// const fullstackCoords = [-87.6320523, 41.8881084] // CHI
 
 const map = new mapboxgl.Map({
   container: "map",
-  center: [-74.009, 40.705], // FullStack coordinates
+  center: fullstackCoords,
   zoom: 12, // starting zoom
   style: "mapbox://styles/mapbox/streets-v10" // mapbox has lots of different map styles available.
 });
@@ -686,7 +699,7 @@ module.exports = g;
 const fetchAttractions = () =>
   fetch("/api")
     .then(result => result.json())
-    .catch(console.error);
+    .catch(err => console.error(err));
 
 module.exports = {
   fetchAttractions
