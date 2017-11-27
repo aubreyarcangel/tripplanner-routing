@@ -25,7 +25,9 @@ router.get("/itineraries/:id", (req, res, next) => {
     include: [{ all: true, nested: true }]
   })
   .then(itinerary => {
-    console.log(itinerary);
+    res.json({
+      itinerary
+    });
   })
     .catch(err => {
       res.send(err);

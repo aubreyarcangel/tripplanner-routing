@@ -553,9 +553,13 @@ if (location.hash) {
   const id = parseInt(location.hash.slice(1))
   fetch('http://localhost:3000/api/itineraries/' + id)
   .then(itineraryData => {
+    console.log(itineraryData.hotels)
     itineraryData.hotels.forEach(hotel => buildAttractionAssets("hotels", hotel));
     itineraryData.restaurants.forEach(restaurant => buildAttractionAssets("restaurants", restaurant));
     itineraryData.activities.forEach(activity => buildAttractionAssets("activities", activity));
+  })
+  .catch(err => {
+    console.log(err)
   })
 } 
 /*
